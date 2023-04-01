@@ -1,0 +1,67 @@
+import { ChatInputCommandInteraction, Client, Events, RESTPostAPIChatInputApplicationCommandsJSONBody, SlashCommandBuilder } from 'discord.js';
+import { extname, join } from 'path';
+import { readdirSync } from 'fs';
+
+export interface Command {
+    data:  RESTPostAPIChatInputApplicationCommandsJSONBody | SlashCommandBuilder;
+    execute: (interaction: ChatInputCommandInteraction) => Promise<string>;
+}
+
+// DOC because Discord.js is unable to use JSDoc
+const commandsPath = join(__dirname, '../commands');
+const supportedExtensions: string[] = ['.js', '.ts'];
+let commands: Command[] = [];
+void readCommands()
+
+async function readCommands(): Promise<void> {
+    const commandsRead: Command[] = [];
+    const commandFiles = readdirSync(commandsPath).filter((file) => supportedExtensions.some(extension => extname(file) === extension));
+    for (const file of commandFiles) {
+        const command: Command = (await import(`../commands/${file}`)).default;
+        commandsRead.push(command);
+    }
+    commands = commandsRead;
+}
+
+export async function unregisterApplicationCommands(client: Client<true>): Promise<void> {
+    const currentCommands = await client.application.commands.fetch();
+    for (const [commandId] of currentCommands) {
+        await client.application.commands.delete(commandId);
+    }
+}
+
+/**
+ * CHAT_INPUT    1    Slash commands; a text-based command that shows up when a user types /
+ * USER          2    A UI-based command that shows up when you right click or tap on a user
+ * MESSAGE       3    A UI-based command that shows up when you right click or tap on a message
+ */
+export async function setupApplicationCommands(client: Client<true>): Promise<void> {
+    client.on(Events.InteractionCreate, async (interaction) => {
+        if (!interaction.isChatInputCommand()) {
+            return;
+        }
+
+        const command = commands.find((command) => command.data.name === interaction.commandName);
+
+        if (!command) {
+            console.error(`No command matching ${interaction.commandName} was found.`);
+            return;
+        }
+
+        try {
+            const reply = await command.execute(interaction);
+            interaction.reply({ ephemeral: true, content: reply });
+        } catch (error) {
+            console.error(`Error executing ${interaction.commandName}`);
+            console.error(error);
+        }
+    });
+
+    await registerApplicationCommands(client);
+}
+
+export async function registerApplicationCommands(client: Client<true>): Promise<void> {
+    for (const command of commands) {
+        await client.application.commands.create(command.data);
+    }
+}

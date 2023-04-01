@@ -1,0 +1,28 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "overrides": [
+    {
+      "files": ["index.ts", "./src/**/*.ts"],
+      "parserOptions": {
+        "sourceType": "module",
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./"
+      },
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+      ],
+      "rules": {
+        "quotes": ["error", "single"],
+        "indent": ["error", 4],
+        "@typescript-eslint/no-unnecessary-condition": "error"
+      }
+    }
+  ]
+}

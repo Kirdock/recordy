@@ -1,0 +1,32 @@
+{
+  "name": "recordy",
+  "version": "0.0.1",
+  "description": "Voice record bot for Discord",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "nodemon --config nodemon.json",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "lint:check": "eslint ./",
+    "lint:fix": "eslint --fix ./"
+  },
+  "dependencies": {
+    "@discordjs/voice": "0.14.0",
+    "@kirdock/discordjs-voice-recorder": "^1.0.0",
+    "discord.js": "^14.8.0",
+    "dotenv": "^16.0.3",
+    "sodium": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.3"
+  },
+  "author": "Kirdock",
+  "license": "ISC"
+}
