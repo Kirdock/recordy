@@ -23,7 +23,7 @@ const onReadyPromise = new Promise((resolve, reject) => {
 void (async ()=> {
 
     try {
-        await client.login(envs.clientToken);
+        await client.login(envs.CLIENT_TOKEN);
         await onReadyPromise;
 
         await setupApplicationCommands(client);

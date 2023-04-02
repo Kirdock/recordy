@@ -3,8 +3,11 @@ import { joinVoiceChannel } from '@discordjs/voice';
 import { PassThrough, Readable } from 'stream';
 import { VoiceRecorder } from '@kirdock/discordjs-voice-recorder/lib';
 import { AudioExportType } from '@kirdock/discordjs-voice-recorder/lib/models/types';
+import { envs } from './environment';
 
-const voiceRecorder = new VoiceRecorder();
+const voiceRecorder = new VoiceRecorder({
+    maxRecordTimeMs: envs.MAX_RECORD_TIME_MINUTES ? envs.MAX_RECORD_TIME_MINUTES * 60_000 : undefined,
+});
 
 export async function joinVoice(member:  GuildMember | APIInteractionGuildMember, guild: Guild): Promise<void> {
     if(!(member instanceof GuildMember)) {

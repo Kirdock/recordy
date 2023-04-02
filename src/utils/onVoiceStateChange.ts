@@ -9,7 +9,7 @@ export function onVoiceStateChange(client: Client<true>): void {
         const newChannelMemberCount = newState.channel?.members.size ?? 0;
         const connection = getVoiceConnection(newState.guild.id);
 
-        if(envs.automaticallyJoin && !connection && newState.member) {
+        if(envs.JOIN_AUTOMATICALLY && !connection && newState.member) {
             await joinVoice(newState.member, newState.guild);
         }
         if(!connection) {

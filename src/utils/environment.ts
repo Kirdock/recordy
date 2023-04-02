@@ -1,17 +1,24 @@
 import dotenv from 'dotenv';
 
 interface EnvironmentVariables {
-    clientToken: string;
-    automaticallyJoin: boolean;
+    CLIENT_TOKEN: string;
+    JOIN_AUTOMATICALLY: boolean;
+    MAX_RECORD_TIME_MINUTES?: number;
 }
 
+export type EnvironmentVariablesAvailable = {[P in keyof EnvironmentVariables]?: string};
+
 function getEnvs(): EnvironmentVariables {
-    if(!process.env.CLIENT_TOKEN) {
+    const availableEnv: EnvironmentVariablesAvailable = process.env;
+    if(!availableEnv.CLIENT_TOKEN) {
         throw new Error('The environment variable CLIENT_TOKEN must be provided!');
     }
+    const parsedRecordTime = availableEnv.MAX_RECORD_TIME_MINUTES ? +availableEnv.MAX_RECORD_TIME_MINUTES : undefined;
+    const recordTime = parsedRecordTime && Number.isFinite(parsedRecordTime) ? +parsedRecordTime : undefined
     return {
-        clientToken: process.env.CLIENT_TOKEN,
-        automaticallyJoin: process.env.JOIN_AUTOMATICALLY === 'true',
+        CLIENT_TOKEN: availableEnv.CLIENT_TOKEN,
+        JOIN_AUTOMATICALLY: availableEnv.JOIN_AUTOMATICALLY === 'true',
+        MAX_RECORD_TIME_MINUTES: recordTime,
     };
 }
 

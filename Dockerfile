@@ -9,6 +9,7 @@ RUN rm -rf ./src
 
 ENV CLIENT_TOKEN = ""
 ENV JOIN_AUTOMATICALLY = ""
+ENV MAX_RECORD_TIME_MINUTES = ""
 
 RUN apt-get -y update\
     && apt-get -y upgrade\
