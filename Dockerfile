@@ -3,7 +3,7 @@ WORKDIR /app/bot
 
 COPY package.json package-lock.json ./
 RUN npm ci
-COPY src/ ./
+COPY ./ ./
 RUN npm run build
 RUN rm -rf ./src
 
