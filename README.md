@@ -11,7 +11,7 @@ Docker pull: `docker pull striessnigk/recordy:latest`
 
 ## Configuration (Environment variables)
 - `CLIENT_TOKEN`: The token of your discord bot.
-- `JOIN_AUTOMATICALLY`: Determines if the bot should automatically join if more than two users are in a channel (Default `false`). To enable it, set the value to `true`.
+- `JOIN_AUTOMATICALLY`: Determines if the bot should automatically join if more than one user is in a channel (Default `false`). To enable it, set the value to `true`.
 - `MAX_RECORD_TIME_MINUTES`: Determines how many minutes you want to buffer. Everything older than this threshold is deleted (Default `10`).
 
 ## Slash Commands
