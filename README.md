@@ -1,8 +1,13 @@
 # Recordy
+[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/striessnigk/recordy)
+
 **Important things first: This bot gives you the whole conversation of the voice channel, not just chunks of it. It's as the same as you would hear it.**
 
 This Discord bot if for recording voice activity in voice channels.
 If you save the recording, it is sent to the discord channel you put the slash command in.
+
+Docker pull: `docker pull striessnigk/recordy:latest`
+
 
 ## Configuration (Environment variables)
 - `CLIENT_TOKEN`: The token of your discord client.
