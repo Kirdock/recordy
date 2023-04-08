@@ -1,6 +1,6 @@
 import { Command } from '../utils/appCommands';
 import { APIApplicationCommandOptionChoice, SlashCommandBuilder } from 'discord.js';
-import { getRecording } from '../utils/voice';
+import { voiceRecorder } from '../utils/voice';
 import { AudioExportType } from '@kirdock/discordjs-voice-recorder/lib/models/types';
 import { sendFile } from '../utils/sendMessages';
 
@@ -41,7 +41,7 @@ const command: Command = {
 
         const minutes = interaction.options.getInteger('minutes');
         const exportType = (interaction.options.getString('export type') as AudioExportType | null) ?? undefined;
-        const readable = await getRecording(interaction.guildId, exportType ?? undefined, minutes ?? undefined);
+        const readable = await voiceRecorder.getRecordedVoiceAsReadable(interaction.guildId, exportType ?? undefined, minutes ?? undefined);
         await sendFile(readable, channel, exportType);
 
         return 'done';

@@ -25,8 +25,12 @@ async function readCommands(): Promise<void> {
 
 export async function unregisterApplicationCommands(client: Client<true>): Promise<void> {
     const currentCommands = await client.application.commands.fetch();
-    for (const [commandId] of currentCommands) {
-        await client.application.commands.delete(commandId);
+    for (const [commandId, command] of currentCommands) {
+        try {
+            await client.application.commands.delete(commandId);
+        } catch (error) {
+            console.error(`Could not delete command ${command.name}. Error:`, error);
+        }
     }
 }
 
@@ -35,7 +39,7 @@ export async function unregisterApplicationCommands(client: Client<true>): Promi
  * USER          2    A UI-based command that shows up when you right click or tap on a user
  * MESSAGE       3    A UI-based command that shows up when you right click or tap on a message
  */
-export async function setupApplicationCommands(client: Client<true>): Promise<void> {
+export function setupApplicationCommands(client: Client<true>): void {
     client.on(Events.InteractionCreate, async (interaction) => {
         if (!interaction.isChatInputCommand()) {
             return;
@@ -56,8 +60,6 @@ export async function setupApplicationCommands(client: Client<true>): Promise<vo
             console.error(error);
         }
     });
-
-    await registerApplicationCommands(client);
 }
 
 export async function registerApplicationCommands(client: Client<true>): Promise<void> {

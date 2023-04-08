@@ -1,13 +1,12 @@
-import { APIInteractionGuildMember, Guild, GuildMember, Snowflake } from 'discord.js';
+import { APIInteractionGuildMember, Guild, GuildMember } from 'discord.js';
 import { joinVoiceChannel } from '@discordjs/voice';
-import { PassThrough, Readable } from 'stream';
 import { VoiceRecorder } from '@kirdock/discordjs-voice-recorder/lib';
-import { AudioExportType } from '@kirdock/discordjs-voice-recorder/lib/models/types';
 import { envs } from './environment';
+import { client } from '../index';
 
-const voiceRecorder = new VoiceRecorder({
+export const voiceRecorder = new VoiceRecorder({
     maxRecordTimeMs: envs.MAX_RECORD_TIME_MINUTES ? envs.MAX_RECORD_TIME_MINUTES * 60_000 : undefined,
-});
+}, client);
 
 export async function joinVoice(member:  GuildMember | APIInteractionGuildMember, guild: Guild): Promise<void> {
     if(!(member instanceof GuildMember)) {
@@ -25,10 +24,4 @@ export async function joinVoice(member:  GuildMember | APIInteractionGuildMember
     });
 
     voiceRecorder.startRecording(connection);
-}
-
-export async function getRecording(guildId: Snowflake, exportType: AudioExportType = 'single', minutes = 10): Promise<Readable> {
-    const passThrough = new PassThrough();
-    await voiceRecorder.getRecordedVoice(passThrough, guildId, exportType, minutes);
-    return passThrough;
 }

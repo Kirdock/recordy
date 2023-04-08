@@ -9,7 +9,7 @@ interface EnvironmentVariables {
 export type EnvironmentVariablesAvailable = {[P in keyof EnvironmentVariables]?: string};
 
 function getEnvs(): EnvironmentVariables {
-    const availableEnv: EnvironmentVariablesAvailable = process.env;
+    const availableEnv = process.env;
     if(!availableEnv.CLIENT_TOKEN) {
         throw new Error('The environment variable CLIENT_TOKEN must be provided!');
     }

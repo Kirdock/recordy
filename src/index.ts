@@ -4,7 +4,7 @@ import { setupApplicationCommands } from './utils/appCommands';
 import { setupFallbackRegister } from './utils/onMessages';
 import { onVoiceStateChange } from './utils/onVoiceStateChange';
 
-const client = new Client({
+export const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildVoiceStates,
@@ -26,8 +26,8 @@ void (async ()=> {
         await client.login(envs.CLIENT_TOKEN);
         await onReadyPromise;
 
-        await setupApplicationCommands(client);
-        await setupFallbackRegister(client);
+        setupApplicationCommands(client);
+        setupFallbackRegister(client);
         await onVoiceStateChange(client);
 
         console.log('Client is ready!')

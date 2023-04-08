@@ -1,9 +1,9 @@
 import { Client, Events } from 'discord.js';
-import { joinVoice } from './voice';
 import { getVoiceConnection } from '@discordjs/voice';
 import { envs } from './environment';
 
-export function onVoiceStateChange(client: Client<true>): void {
+export async function onVoiceStateChange(client: Client<true>): Promise<void> {
+    const { joinVoice } = await import('./voice'); // lazy loading to prevent circular dependency
     client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
         const oldChannelMemberCount = oldState.channel?.members.size ?? 0;
         const newChannelMemberCount = newState.channel?.members.size ?? 0;
