@@ -1,10 +1,15 @@
-import { ChatInputCommandInteraction, Client, Events, RESTPostAPIChatInputApplicationCommandsJSONBody, SlashCommandBuilder } from 'discord.js';
+import { BaseMessageOptions, ChatInputCommandInteraction, Client, Events, RESTPostAPIChatInputApplicationCommandsJSONBody, SlashCommandBuilder } from 'discord.js';
 import { extname, join } from 'path';
 import { readdirSync } from 'fs';
 
+interface InteractionFileResponse {
+    files: BaseMessageOptions['files'];
+    ephemeral: false;
+}
+
 export interface Command {
     data:  RESTPostAPIChatInputApplicationCommandsJSONBody | SlashCommandBuilder;
-    execute: (interaction: ChatInputCommandInteraction) => Promise<string>;
+    execute: (interaction: ChatInputCommandInteraction) => Promise<string | InteractionFileResponse>;
 }
 
 // DOC because Discord.js is unable to use JSDoc
@@ -54,7 +59,11 @@ export function setupApplicationCommands(client: Client<true>): void {
 
         try {
             const reply = await command.execute(interaction);
-            interaction.reply({ ephemeral: true, content: reply });
+            if(typeof reply === 'string') {
+                interaction.reply({ ephemeral: true, content: reply });
+            } else {
+                interaction.reply(reply);
+            }
         } catch (error) {
             console.error(`Error executing ${interaction.commandName}`);
             console.error(error);

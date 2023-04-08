@@ -2,7 +2,6 @@ import { Command } from '../utils/appCommands';
 import { APIApplicationCommandOptionChoice, SlashCommandBuilder } from 'discord.js';
 import { voiceRecorder } from '../utils/voice';
 import { AudioExportType } from '@kirdock/discordjs-voice-recorder/lib/models/types';
-import { sendFile } from '../utils/sendMessages';
 
 type Choices = APIApplicationCommandOptionChoice & {value: AudioExportType};
 const choices: Choices[] = [
@@ -34,17 +33,30 @@ const command: Command = {
         if(!guild) {
             return 'Guild cannot be fetched';
         }
-        const channel = interaction.channel ?? await guild.channels.fetch(interaction.channelId);
-        if(!channel?.isTextBased()) {
-            return 'Channel is not a text channel';
-        }
 
         const minutes = interaction.options.getInteger('minutes');
         const exportType = (interaction.options.getString('export type') as AudioExportType | null) ?? undefined;
         const readable = await voiceRecorder.getRecordedVoiceAsReadable(interaction.guildId, exportType ?? undefined, minutes ?? undefined);
-        await sendFile(readable, channel, exportType);
+        const date = new Date().toISOString();
 
-        return 'done';
+        let fileType: string, fileName: string;
+        if (exportType === 'single') {
+            fileType = 'audio/mp3';
+            fileName = `${date}.mp3`;
+
+        } else {
+            fileType = 'application/zip';
+            fileName = `${date}-all-streams.zip`;
+        }
+
+        return{
+            files: [ {
+                attachment: readable,
+                contentType: fileType,
+                name: fileName,
+            } ],
+            ephemeral: false,
+        };
     },
 };
 
