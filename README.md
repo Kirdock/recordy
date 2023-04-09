@@ -17,6 +17,7 @@ Docker pull: `docker pull striessnigk/recordy:latest`
 ## Slash Commands
 - `join`: The bot joins the voice channel the user is in.
 - `re-register`: Re-registers all slash commands.
+- `unregister`: Deletes all slash commands.
 - `save`: Saves the recording.
   - Sub-options:
     - `minutes`: Determines how many minutes you want to be saved up to a maximum of `MAX_RECORD_TIME_MINUTES` (Default `10`).
