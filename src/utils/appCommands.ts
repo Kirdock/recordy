@@ -9,7 +9,7 @@ interface InteractionFileResponse {
 
 export interface Command {
     data:  RESTPostAPIChatInputApplicationCommandsJSONBody | SlashCommandBuilder;
-    execute: (interaction: ChatInputCommandInteraction) => Promise<string | InteractionFileResponse>;
+    execute: (interaction: ChatInputCommandInteraction) => Promise<string | InteractionFileResponse | undefined>;
 }
 
 // DOC because Discord.js is unable to use JSDoc
@@ -61,7 +61,7 @@ export function setupApplicationCommands(client: Client<true>): void {
             const reply = await command.execute(interaction);
             if(typeof reply === 'string') {
                 interaction.reply({ ephemeral: true, content: reply });
-            } else {
+            } else if(reply) {
                 interaction.reply(reply);
             }
         } catch (error) {

@@ -34,9 +34,10 @@ const command: Command = {
             return 'Guild cannot be fetched';
         }
 
+        const message = await interaction.reply('Loading...')
         const minutes = interaction.options.getInteger('minutes');
         const exportType = (interaction.options.getString('export type') as AudioExportType | null) ?? undefined;
-        const readable = await voiceRecorder.getRecordedVoiceAsReadable(interaction.guildId, exportType ?? undefined, minutes ?? undefined);
+        const buffer = await voiceRecorder.getRecordedVoiceAsBuffer(interaction.guildId, exportType ?? undefined, minutes ?? undefined);
         const date = new Date().toISOString();
 
         let fileType: string, fileName: string;
@@ -49,14 +50,13 @@ const command: Command = {
             fileName = `${date}-all-streams.zip`;
         }
 
-        return{
+        await message.edit({
             files: [ {
-                attachment: readable,
+                attachment: buffer,
                 contentType: fileType,
                 name: fileName,
             } ],
-            ephemeral: false,
-        };
+        });
     },
 };
 
