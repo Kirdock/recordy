@@ -44,6 +44,11 @@ In both cases a volume mount would make sense, so that these settings are saved 
 I would say that this can be saved via a simple json file.
 
 ### Too large files
-At the moment I'm just sending the files to a Discord channel but due to limitations this may not work for all files.
-The question is, which services should I support for file upload?
-I would say I will offer several services, and you just have to provide an access token.
+~~At the moment I'm just sending the files to a Discord channel but due to limitations this may not work for all files.~~
+
+~~The question is, which services should I support for file upload?~~
+
+~~I would say I will offer several services, and you just have to provide an access token.~~
+
+Discord increased the maximum file size for all users to 25MB
+
