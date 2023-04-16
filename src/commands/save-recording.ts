@@ -34,7 +34,7 @@ const command: Command = {
             return 'Guild cannot be fetched';
         }
 
-        const message = await interaction.reply('Loading...')
+        await interaction.deferReply();
         const minutes = interaction.options.getInteger('minutes');
         const exportType = (interaction.options.getString('export type') as AudioExportType | null) ?? undefined;
         const buffer = await voiceRecorder.getRecordedVoiceAsBuffer(interaction.guildId, exportType ?? undefined, minutes ?? undefined);
@@ -50,7 +50,7 @@ const command: Command = {
             fileName = `${date}-all-streams.zip`;
         }
 
-        await message.edit({
+        await interaction.editReply({
             files: [ {
                 attachment: buffer,
                 contentType: fileType,
