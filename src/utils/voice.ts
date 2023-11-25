@@ -5,7 +5,7 @@ import { envs } from './environment';
 import { client } from '../index';
 
 export const voiceRecorder = new VoiceRecorder({
-    maxRecordTimeMs: envs.MAX_RECORD_TIME_MINUTES ? envs.MAX_RECORD_TIME_MINUTES * 60_000 : undefined,
+    maxRecordTimeMinutes: envs.MAX_RECORD_TIME_MINUTES ? envs.MAX_RECORD_TIME_MINUTES : undefined,
 }, client);
 
 export async function joinVoice(member:  GuildMember | APIInteractionGuildMember, guild: Guild): Promise<void> {

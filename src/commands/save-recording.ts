@@ -36,7 +36,7 @@ const command: Command = {
 
         await interaction.deferReply();
         const minutes = interaction.options.getInteger('minutes');
-        const exportType = (interaction.options.getString('export type') as AudioExportType | null) ?? undefined;
+        const exportType = (interaction.options.getString('type') as AudioExportType | null) ?? undefined;
         const buffer = await voiceRecorder.getRecordedVoiceAsBuffer(interaction.guildId, exportType ?? undefined, minutes ?? undefined);
         const date = new Date().toISOString();
 
