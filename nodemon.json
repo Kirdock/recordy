@@ -1,5 +1,5 @@
 {
   "watch": ["src", "index.ts"],
   "ext": "ts,json,js",
-  "exec": "node --loader ts-node/esm ./src/index.ts --project ./tsconfig.json"
+  "exec": "ts-node ./src/index.ts --project ./tsconfig.json"
 }
